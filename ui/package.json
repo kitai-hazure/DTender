@@ -9,12 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
+    "@polybase/auth": "^0.3.38",
+    "@polybase/client": "^0.3.38",
     "@types/node": "18.15.7",
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
+    "@types/react-lottie": "^1.2.6",
+    "antd": "^5.3.2",
     "next": "13.2.4",
+    "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-lottie": "^1.2.3",
     "typescript": "5.0.2"
   }
 }
