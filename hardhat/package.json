@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "deploy:zkEVM": "npx hardhat run scripts/deploy.ts --network zkEVM",
-    "deploy:polygon_mumbai": "npx hardhat run scripts/deploy.ts --network polygon_mumbai"
+    "deploy:polygon_mumbai": "npx hardhat run scripts/deploy.ts --network polygon_mumbai",
+    "setRequest:polygon_mumbai": "npx hardhat run scripts/set-request.ts --network polygon_mumbai"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
@@ -26,6 +27,7 @@
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.8.2"
+    "@openzeppelin/contracts": "^4.8.2",
+    "ethers": "^5.0.0"
   }
 }

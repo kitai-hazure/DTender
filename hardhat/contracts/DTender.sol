@@ -37,6 +37,8 @@ contract DTender is ZKPVerifier {
     // @dev BidAccepted event is emitted when a bid is accepted
     event BidAccepted(uint256 tenderId, uint256 bidId);
 
+    // @dev Proof Submission event is emitted when a proof is submitted
+    event ProofSubmitted(address indexed proofOwner, uint256 indexed proofId);
     // @dev Tender struct
     struct Tender {
         string name;
@@ -275,6 +277,7 @@ contract DTender is ZKPVerifier {
             addressToId[_msgSender()] = id;
             idToAddress[id] = _msgSender();
         }
+        emit ProofSubmitted(_msgSender(), id);
     }
 
     modifier _onlyTrustedAddress(address addr) {
