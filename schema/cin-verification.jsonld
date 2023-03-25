@@ -1,23 +1,25 @@
 {
-    "@context": [{
-        "@version": 1.1,
-        "@protected": true,
-        "id": "@id",
-        "type": "@type",
-        "IsAValidCompanyCIN": {
-            "@id": "https://s3.eu-west-1.amazonaws.com/polygonid-schemas/95af1b4f-078d-4e80-b711-de3e9c59fb95.json-ld#IsAValidCompanyCIN",
-            "@context" : {
-                "@version": 1.1,
-                "@protected": true,
-                "id": "@id",
-                "type": "@type",
-                "poly-vocab": "https://s3.eu-west-1.amazonaws.com/polygonid-schemas/95af1b4f-078d-4e80-b711-de3e9c59fb95.vocab.schema.json",
-                "serialization": "https://github.com/iden3/claim-schema-vocab/blob/main/credentials/serialization.md#",
-                "Corporate Identification Number": {
-                    "@id": "poly-vocab:Corporate Identification Number",
-                    "@type": "serialization:IndexDataSlotA"
-                }
-            }
+  "@context": [
+    {
+      "@version": 1.1,
+      "@protected": true,
+      "id": "@id",
+      "type": "@type",
+      "ProofOfDaoLongevity": {
+        "@id": "https://raw.githubusercontent.com/kitai-hazure/DTender/main/schema/cin-verification.jsonld#IsAValidCompany",
+        "@context": {
+          "@version": 1.1,
+          "@protected": true,
+          "id": "@id",
+          "type": "@type",
+          "vocab": "https://github.com/kitai-hazure/DTender/blob/main/schema/cin-verification.md#",
+          "xsd": "http://www.w3.org/2001/XMLSchema#",
+          "entryDate": {
+            "@id": "vocab:corporateIdentificationNumber",
+            "@type": "xsd:integer"
+          }
         }
-    }]
+      }
+    }
+  ]
 }
