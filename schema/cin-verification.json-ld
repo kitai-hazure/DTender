@@ -6,7 +6,7 @@
       "id": "@id",
       "type": "@type",
       "IsAValidCompany": {
-        "@id": "https://raw.githubusercontent.com/kitai-hazure/DTender/main/schema/cin-verification.jsonld#IsAValidCompany",
+        "@id": "https://raw.githubusercontent.com/kitai-hazure/DTender/main/schema/cin-verification.json-ld#IsAValidCompany",
         "@context": {
           "@version": 1.1,
           "@protected": true,
