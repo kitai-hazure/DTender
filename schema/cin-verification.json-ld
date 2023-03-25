@@ -14,7 +14,7 @@
           "type": "@type",
           "vocab": "https://github.com/kitai-hazure/DTender/blob/main/schema/cin-verification.md#",
           "xsd": "http://www.w3.org/2001/XMLSchema#",
-          "entryDate": {
+          "corporateIdentificationNumber": {
             "@id": "vocab:corporateIdentificationNumber",
             "@type": "xsd:integer"
           }
