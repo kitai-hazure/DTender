@@ -46,7 +46,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <WagmiConfig client={wagmiClient}>
         <Modal
           title="Verification Successful"
-          visible={verificationEvent !== undefined}
+          open={verificationEvent !== undefined}
           onOk={() => setVerificationEvent(undefined)}
           onCancel={() => setVerificationEvent(undefined)}
         >

@@ -4,6 +4,7 @@ import {
   NotificationOutlined,
   UserOutlined,
   DashboardOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { MenuProps, notification } from "antd";
 import { Layout, Menu, theme, Button } from "antd";
@@ -22,7 +23,7 @@ interface IProp {
 }
 
 const CustomLayout = ({ children }: IProp) => {
-  const { authState, signIn } = useContext(AuthContext);
+  const { authState, signIn, signOut } = useContext(AuthContext);
   const router = useRouter();
   const {
     token: { colorBgContainer },
@@ -33,16 +34,19 @@ const CustomLayout = ({ children }: IProp) => {
     "Dashboard",
     "Propose an Investment",
     "View Project Proposals",
+    "Logout",
   ]);
   const [optionRoutes, setOptionRoutes] = React.useState([
     "/dashboard",
     "/propose-investment",
     "/view-project-proposals",
+    "/logout",
   ]);
   const [iconsList, setIconsList] = React.useState([
     DashboardOutlined,
     LaptopOutlined,
     NotificationOutlined,
+    LogoutOutlined,
   ]);
 
   // TODO -> CHECK IF THIS LOGIC IS OF ANY USE OR NOT
@@ -100,7 +104,11 @@ const CustomLayout = ({ children }: IProp) => {
       label: optionNames[index],
       onClick: () => {
         // navigate to the route
-        router.push(optionRoutes[index]);
+        if (optionRoutes[index] === "/logout") {
+          signOut();
+          localStorage.clear();
+          notification.success({ message: "Logged out successfully" });
+        } else router.push(optionRoutes[index]);
       },
     };
   });
