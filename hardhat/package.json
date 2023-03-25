@@ -3,20 +3,29 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "deploy:zkEVM": "npx hardhat run scripts/deploy.ts --network zkEVM",
+    "deploy:polygon_mumbai": "npx hardhat run scripts/deploy.ts --network polygon_mumbai"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
     "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "@nomiclabs/hardhat-ethers": "^2.2.2",
     "@nomiclabs/hardhat-etherscan": "^3.1.6",
+    "@openzeppelin/contracts-upgradeable": "^4.8.2",
     "@typechain/ethers-v5": "^10.2.0",
     "@typechain/hardhat": "^6.1.5",
     "chai": "^4.3.7",
     "dotenv": "^16.0.3",
     "hardhat": "^2.13.0",
     "hardhat-gas-reporter": "^1.0.9",
+    "solidity-bytes-utils": "^0.8.0",
     "solidity-coverage": "^0.8.2",
     "ts-node": "^10.9.1",
     "typechain": "^8.1.1",
     "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.8.2"
   }
 }

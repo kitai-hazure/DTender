@@ -1,18 +1,26 @@
-import { ethers } from "hardhat";
+import hre from "hardhat";
+const { ethers } = hre;
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const verifierContract = "DTender";
 
-  const lockedAmount = ethers.utils.parseEther("0.001");
+  const spongePoseidonLib = "0x12d8C87A61dAa6DD31d8196187cFa37d1C647153";
+  const poseidon6Lib = "0xb588b8f07012Dc958aa90EFc7d3CF943057F17d7";
 
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  const DTender = await ethers.getContractFactory(verifierContract, {
+    libraries: {
+      SpongePoseidon: spongePoseidonLib,
+      PoseidonUnit6L: poseidon6Lib,
+    },
+  });
 
-  await lock.deployed();
+  const dTenderDeployedInstance = await DTender.deploy();
 
+  await dTenderDeployedInstance.deployed();
   console.log(
-    `Lock with ${ethers.utils.formatEther(lockedAmount)}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+    "DTender Verifier Contract Address:",
+    // @ts-ignore
+    dTenderDeployedInstance.address
   );
 }
 
