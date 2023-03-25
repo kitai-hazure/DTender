@@ -2,6 +2,8 @@ import React from "react";
 import { Typography } from "antd";
 import LottieAnimation from "@/components/Lottie";
 import TenderLottie from "@/assets/animation/main__tender.json";
+import { QRCode } from "react-qr-svg";
+import QRJson from "../qrcodes/qrcode.json";
 
 const { Title } = Typography;
 
@@ -26,7 +28,8 @@ export default function Home() {
           participate in tenders and auctions without any intermediaries.
         </Title>
       </div>
-      <LottieAnimation lottieData={TenderLottie} height={"75%"} width={"40%"} />
+      {/* <LottieAnimation lottieData={TenderLottie} height={"75%"} width={"40%"} /> */}
+      <QRCode level="Q" style={{ width: 256 }} value={JSON.stringify(QRJson)} />
     </div>
   );
 }

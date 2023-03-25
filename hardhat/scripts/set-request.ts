@@ -24,23 +24,24 @@ async function main() {
   const query = {
     schema: schemaBigInt,
     claimPathKey: schemaClaimPathKey,
-    operator: Operators.LT, // operator
+    operator: Operators.EQ, // operator
     value: [20020101, ...new Array(63).fill(0).map((i) => 0)], // for operators 1-3 only first value matters
   };
 
   // add the address of the contract just deployed
-  const ERC20VerifierAddress = "<ERC20VerifierAddress>";
+  const DTenderRequestAddress = process.env.CONTRACT_ADDRESS as string;
 
-  let erc20Verifier = await ethers.getContractAt(
-    "ERC20Verifier",
-    ERC20VerifierAddress
+  let dTenderVerifier = await ethers.getContractAt(
+    "DTender",
+    DTenderRequestAddress
   );
 
   const validatorAddress = "0xF2D4Eeb4d455fb673104902282Ce68B9ce4Ac450"; // sig validator
   // const validatorAddress = "0x3DcAe4c8d94359D31e4C89D7F2b944859408C618"; // mtp validator
-
+  console.log("HERE");
   try {
-    await erc20Verifier.setZKPRequest(
+    console.log("Setting request");
+    await dTenderVerifier.setZKPRequest(
       requestId,
       validatorAddress,
       query.schema,
@@ -53,3 +54,10 @@ async function main() {
     console.log("error: ", e);
   }
 }
+
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
