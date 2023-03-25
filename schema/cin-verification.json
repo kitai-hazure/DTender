@@ -3,7 +3,7 @@
     "type": "object",
     "$metadata": {
       "uris": {
-        "jsonLdContext": "https://raw.githubusercontent.com/kitai-hazure/DTender/main/schema/cin-verification.jsonld",
+        "jsonLdContext": "https://raw.githubusercontent.com/kitai-hazure/DTender/main/schema/cin-verification.json-ld",
         "jsonSchema": "https://raw.githubusercontent.com/kitai-hazure/DTender/main/schema/cin-verification.json"
       }
     },
