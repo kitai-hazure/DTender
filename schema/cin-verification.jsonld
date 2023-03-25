@@ -5,7 +5,7 @@
       "@protected": true,
       "id": "@id",
       "type": "@type",
-      "ProofOfDaoLongevity": {
+      "IsAValidCompany": {
         "@id": "https://raw.githubusercontent.com/kitai-hazure/DTender/main/schema/cin-verification.jsonld#IsAValidCompany",
         "@context": {
           "@version": 1.1,
