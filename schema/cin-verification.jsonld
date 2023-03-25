@@ -1,0 +1,23 @@
+{
+    "@context": [{
+        "@version": 1.1,
+        "@protected": true,
+        "id": "@id",
+        "type": "@type",
+        "IsAValidCompanyCIN": {
+            "@id": "https://s3.eu-west-1.amazonaws.com/polygonid-schemas/95af1b4f-078d-4e80-b711-de3e9c59fb95.json-ld#IsAValidCompanyCIN",
+            "@context" : {
+                "@version": 1.1,
+                "@protected": true,
+                "id": "@id",
+                "type": "@type",
+                "poly-vocab": "https://s3.eu-west-1.amazonaws.com/polygonid-schemas/95af1b4f-078d-4e80-b711-de3e9c59fb95.vocab.schema.json",
+                "serialization": "https://github.com/iden3/claim-schema-vocab/blob/main/credentials/serialization.md#",
+                "Corporate Identification Number": {
+                    "@id": "poly-vocab:Corporate Identification Number",
+                    "@type": "serialization:IndexDataSlotA"
+                }
+            }
+        }
+    }]
+}
