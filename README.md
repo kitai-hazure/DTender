@@ -7,6 +7,16 @@ https://youtu.be/RW5zHzjfPtU
 ## Canva Presentation
 https://www.canva.com/design/DAFeStj_tSw/0XjNlPShfmSFvDtkaViVbQ/view?utm_content=DAFeStj_tSw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
+## Polygon zkEVM
+https://explorer.public.zkevm-test.net/address/0xCc4A6407B36120f21ff21d0F7Eef23DBEaD2A977
+
+## Polygon Mumbai Testnet
+https://mumbai.polygonscan.com/address/0x53e9D85ddB0364509Fc773d3fb1007cd351B8d5A
+
+## Polybase Databases
+https://explorer.testnet.polybase.xyz/collections/pk%2F0x08965f78c6a549905b66896f5a44b3a3ac27cdd9759057d534a0b9a5bcdf7cb9aa852288826e01a7034716a2f98252500a8e480a40a2be9b6a7cc1df2f4fd9f1%2FDTender%2FDTenderDynamicNFTMetadata
+https://explorer.testnet.polybase.xyz/collections/pk%2F0x08965f78c6a549905b66896f5a44b3a3ac27cdd9759057d534a0b9a5bcdf7cb9aa852288826e01a7034716a2f98252500a8e480a40a2be9b6a7cc1df2f4fd9f1%2FDTender%2FVerifiedCompany
+
 ## Project Description
 DTender is a decentralised tender-bidding system that levels the playing field and makes the bidding process transparent, automated and trustworthy. Verified (using polygon id)company owners can log on to the application and release tenders for people to bid on. The first person to bid the lowest amount at the end of deadline gets the amount that he bid for.
 
