@@ -1,5 +1,4 @@
 .tenderCard {
-  /* width: 60%; */
   margin: auto;
   margin-bottom: 2rem;
   display: flex;
@@ -91,4 +90,15 @@
 
 .bidDisplay {
   font-size: 10px;
+}
+
+.bidCard {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.bidCard:hover {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s ease-in-out;
+  transform: scale(1.01);
 }

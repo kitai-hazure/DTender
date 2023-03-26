@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   DatePicker,
   Form,
   Input,
   InputNumber,
+  notification,
   Typography,
   Upload,
 } from "antd";
@@ -14,13 +15,16 @@ import DTenderContract from "@/contracts/DTender.json";
 import { PlusOutlined } from "@ant-design/icons";
 import { getSolidityDate } from "@/utils/solidity";
 import Moralis from "moralis";
+import { useRouter } from "next/router";
 
 const { Title } = Typography;
 
 export default function ProposeInvestment() {
   const [form] = Form.useForm();
-  const { contract } = useContext(AuthContext);
+  const { contract, isSignedInMetamask, isCompany } = useContext(AuthContext);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const onFinish = async (values: any) => {
     setLoading(true);
@@ -50,23 +54,17 @@ export default function ProposeInvestment() {
     setLoading(false);
   };
 
-  // useEffect(() => {
-  //   console.log("SIGNER: ", signer);
-  //   if (signer) {
-  //     const contract = new ethers.Contract(
-  //       "0x5c876A33570B1202Caf2892ce3D6F53c6c40bEC0",
-  //       DTenderContract.abi,
-  //       signer
-  //     );
-  //     setContract(contract);
-  //     const idk = async () => {
-  //       contract.getTenders().then((res: any) => {
-  //         console.log("RES: ", res);
-  //       });
-  //     };
-  //     idk();
-  //   }
-  // }, [signer]);
+  useEffect(() => {
+    if (!isSignedInMetamask || !isCompany) {
+      notification.destroy();
+      notification.error({
+        message: "Not a Company",
+        description: "Only companies can propose tenders.",
+      });
+      router.push("/");
+      return;
+    }
+  }, []);
 
   return (
     <div>

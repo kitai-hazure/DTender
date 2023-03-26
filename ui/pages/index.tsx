@@ -1,10 +1,20 @@
 import React, { useContext } from "react";
-import { Button, InputNumber, Modal, Select, Typography } from "antd";
+import {
+  Button,
+  InputNumber,
+  Modal,
+  notification,
+  Select,
+  Typography,
+} from "antd";
 import LottieAnimation from "@/components/Lottie";
 import TenderLottie from "@/assets/animation/main__tender.json";
 import { QRCode } from "react-qr-svg";
 import QRJson from "../qrcodes/qrcode.json";
 import { AuthContext } from "@/context/AuthContext";
+import { useContractEvent } from "wagmi";
+import DTenderJSON from "@/contracts/DTender.json";
+
 const { Title } = Typography;
 
 export default function Home() {
@@ -22,6 +32,49 @@ export default function Home() {
   const [isCompany, setIsCompany] = React.useState<null | boolean>(null);
   const [showQR, setShowQR] = React.useState<boolean>(false);
   const [isVisible, setIsVisible] = React.useState<boolean>(true);
+  const { setCompany, setOptionToTrue } = useContext(AuthContext);
+
+  const completeCompanyVerification = () => {
+    onVerificationOk();
+    notification.success({
+      message: "Verification Successful",
+      description:
+        "You have been successfully verified using the polygon ID zkp proof. Hell yeah!!!!",
+    });
+    setCompany(true);
+    setOptionToTrue();
+    setShowQR(false);
+    setIsVisible(false);
+  };
+
+  const completeBidderVerification = () => {
+    notification.success({
+      message: "Successful Login",
+      description: "You are ready to start bidding on tenders. Hell yeah!!!!",
+    });
+    setCompany(false);
+    setOptionToTrue();
+    setIsVisible(false);
+  };
+
+  const onVerificationOk = async () => {
+    // polybase addition
+    await db!
+      .collection("VerifiedCompany")
+      .create([
+        localStorage.getItem("walletAddress") as string,
+        localStorage.getItem("walletAddress") as string,
+      ]);
+  };
+
+  useContractEvent({
+    address: `0x5c876A33570B1202Caf2892ce3D6F53c6c40bEC0`,
+    abi: DTenderJSON.abi,
+    eventName: "ProofSubmitted",
+    listener: (event) => {
+      completeCompanyVerification();
+    },
+  });
 
   return (
     <div>
@@ -68,7 +121,9 @@ export default function Home() {
             } else {
               setShowQR(true);
             }
-          } else setIsVisible(false);
+          } else {
+            completeBidderVerification();
+          }
         }}
       >
         {!showQR && (

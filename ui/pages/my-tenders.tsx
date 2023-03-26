@@ -1,3 +1,4 @@
+import LottieAnimation from "@/components/Lottie";
 import { AuthContext } from "@/context/AuthContext";
 import {
   Button,
@@ -12,6 +13,8 @@ import {
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
+import loadingAnimation from "@/assets/animation/loading.json";
+import emptyAnimation from "@/assets/animation/empty.json";
 import styles from "../styles/MyTenders.module.css";
 
 interface Tender {
@@ -138,6 +141,7 @@ const TenderCard = ({
         }
         className={styles.bidButton}
         block
+        disabled={tender.isAccepted}
       >
         {signerAddress == tender.owner.toLowerCase()
           ? "View Bids"
@@ -147,7 +151,13 @@ const TenderCard = ({
   );
 };
 
-const BidCard = ({ bid }: { bid: Bids }) => {
+const BidCard = ({
+  bid,
+  acceptBid,
+}: {
+  bid: Bids;
+  acceptBid: (bidId: bigint, bidAmount: bigint) => void;
+}) => {
   return (
     <Card className={styles.bidCard}>
       <div className={styles.bidItem}>
@@ -174,7 +184,12 @@ const BidCard = ({ bid }: { bid: Bids }) => {
           {bid.createdAt.toDateString()}
         </Typography.Text>
       </div>
-      <Button type="primary" className={styles.bidButton} block>
+      <Button
+        type="primary"
+        className={styles.bidButton}
+        block
+        onClick={() => acceptBid(bid.bidId, bid.bidAmount)}
+      >
         Accept Bid
       </Button>
     </Card>
@@ -183,15 +198,17 @@ const BidCard = ({ bid }: { bid: Bids }) => {
 
 export default function MyTenders() {
   const [tenders, setTenders] = useState<Tender[]>();
-  const { contract, signer } = useContext(AuthContext);
+  const { contract, isSignedInMetamask, selectedOption, db } =
+    useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const [selectedTender, setSelectedTender] = useState<Tender>();
-  const [getBids, setGetBids] = useState<Bids[]>([]);
-  const { query } = useRouter();
   const [isMine, setIsMine] = useState<boolean>(false);
-  const [form] = Form.useForm();
   const [viewBidsModal, setViewBidsModal] = useState<boolean>(false);
   const [bids, setBids] = useState<Bids[]>([]);
+
+  const { query } = useRouter();
+  const [form] = Form.useForm();
+  const router = useRouter();
 
   const onFinish = async (values: any) => {
     try {
@@ -207,6 +224,33 @@ export default function MyTenders() {
       });
     } finally {
       setShowModal(false);
+    }
+  };
+
+  const acceptBid = async (bidId: bigint, bidAmount: bigint) => {
+    try {
+      if (selectedTender && bidId) {
+        await contract?.acceptBid(
+          BigInt.asUintN(256, selectedTender?.tenderId),
+          BigInt.asUintN(256, bidId),
+          { value: BigInt.asUintN(256, bidAmount) }
+        );
+        notification.success({
+          message: "Bid Accepted",
+          description: "Bid has been accepted successfully",
+        });
+        // update NFT
+        await db!
+          .collection("DTenderDynamicNFTMetadata")
+          .record("2")
+          .call("upgradeLevel", []);
+        console.log("done");
+      }
+    } catch (e) {
+      notification.error({
+        message: "Bid Acceptance Failed",
+        description: "Bid could not be accepted",
+      });
     }
   };
 
@@ -245,7 +289,7 @@ export default function MyTenders() {
         setTenders(tenderList);
       }
     };
-    getTenders();
+    setTimeout(() => getTenders(), 1000);
   }, [contract]);
 
   useEffect(() => {
@@ -271,6 +315,17 @@ export default function MyTenders() {
     };
     getBids();
   }, [contract, viewBidsModal]);
+
+  useEffect(() => {
+    if (!isSignedInMetamask || !selectedOption) {
+      notification.destroy();
+      notification.error({
+        message: "Not Signed In",
+        description: "Please sign in to continue",
+      });
+      router.push("/");
+    }
+  }, [isSignedInMetamask, selectedOption]);
 
   return (
     <div>
@@ -327,11 +382,15 @@ export default function MyTenders() {
             {bids.length > 0 ? (
               <>
                 {bids.map((bid, index) => (
-                  <BidCard key={index} bid={bid} />
+                  <BidCard key={index} bid={bid} acceptBid={acceptBid} />
                 ))}
               </>
             ) : (
-              <Typography.Text>No bids yet</Typography.Text>
+              <LottieAnimation
+                height={300}
+                width={300}
+                lottieData={emptyAnimation}
+              />
             )}
           </div>
         </Modal>
@@ -352,9 +411,25 @@ export default function MyTenders() {
             ))}
           </div>
         ) : (
-          <Typography.Text>Loading...</Typography.Text>
+          <LottieAnimation
+            height={300}
+            width={300}
+            lottieData={loadingAnimation}
+          />
         )}
       </div>
+      <Button
+        onClick={async () => {
+          console.log("calling upgrade level");
+          await db!
+            .collection("DTenderDynamicNFTMetadata")
+            .record("2")
+            .call("upgradeLevel", []);
+          console.log("done");
+        }}
+      >
+        bhendi
+      </Button>
     </div>
   );
 }

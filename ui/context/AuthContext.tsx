@@ -3,9 +3,8 @@ import { Polybase } from "@polybase/client";
 import { ethPersonalSign } from "@polybase/eth";
 import { Auth, AuthState } from "@polybase/auth";
 import { IAuthContextProps, AuthProviderProps } from "@/types/auth.types";
-import { configureChains, useAccount, useConnect } from "wagmi";
+import { configureChains } from "wagmi";
 import { polygonMumbai } from "wagmi/chains";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { publicProvider } from "wagmi/providers/public";
 import DTenderContract from "@/contracts/DTender.json";
 import { Contract, ethers } from "ethers";
@@ -34,7 +33,7 @@ export const AuthContext = React.createContext<IAuthContextProps>({
   setOptionToTrue: () => {},
   signer: undefined,
   contract: undefined,
-  db: undefined
+  db: undefined,
 });
 
 const { chains, provider } = configureChains(
@@ -56,21 +55,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     if (typeof window !== "undefined") {
       localStorage.setItem("walletAddress", JSON.stringify(authState?.userId));
     }
-    setIsSignedInMetamask(true);
     // @ts-ignore
     const provider = new ethers.providers.Web3Provider(window?.ethereum, "any");
     setProvider(provider);
-    await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner();
-    console.log("signer: ", signer);
-    setSigner(signer);
-    setContract(
-      new ethers.Contract(
-        "0x5c876A33570B1202Caf2892ce3D6F53c6c40bEC0",
-        DTenderContract.abi,
-        signer
-      )
-    );
+    if (authState?.userId) {
+      setIsSignedInMetamask(true);
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      console.log("signer: ", signer);
+      setSigner(signer);
+      setContract(
+        new ethers.Contract(
+          "0x5c876A33570B1202Caf2892ce3D6F53c6c40bEC0",
+          DTenderContract.abi,
+          signer
+        )
+      );
+    }
   };
 
   const signOut = async () => {
@@ -92,9 +93,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
+    signIn();
     const isCompany = localStorage.getItem("isCompany");
     if (isCompany) setIsCompany(JSON.parse(isCompany));
-    signIn();
   }, []);
 
   useMemo(() => {
@@ -118,7 +119,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isSignedInMetamask,
         signer,
         contract,
-        db
+        db,
       }}
     >
       {children}

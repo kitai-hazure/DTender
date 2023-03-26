@@ -14,6 +14,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { AuthContext } from "@/context/AuthContext";
 import AuthButton from "./AuthButton";
+import LottieAnimation from "./Lottie";
+import loadingAnimation from "../assets/animation/loading.json";
 // import { useSigner } from "wagmi";
 
 const { Title } = Typography;
@@ -24,7 +26,8 @@ interface IProp {
 }
 
 const CustomLayout = ({ children }: IProp) => {
-  const { authState, signIn, signOut, db } = useContext(AuthContext);
+  const { authState, signIn, signOut, db, isSignedInMetamask } =
+    useContext(AuthContext);
   const [currLevel, setCurrLevel] = React.useState(undefined);
   const [loading, setLoading] = React.useState(false);
 
@@ -148,7 +151,7 @@ const CustomLayout = ({ children }: IProp) => {
       // return data?.level;
       console.log("Data: ", data);
       setCurrLevel(data.level);
-      setLoading(false);
+      setTimeout(() => setLoading(false), 1000);
     };
 
     getNFTFromID();
@@ -168,7 +171,7 @@ const CustomLayout = ({ children }: IProp) => {
           }}
         >
           <Link href="/">
-            <Title style={{ color: "white", marginTop: 8 }} level={2}>
+            <Title style={{ color: "white", marginTop: 30 }} level={2}>
               DTender
             </Title>
           </Link>
@@ -176,31 +179,41 @@ const CustomLayout = ({ children }: IProp) => {
             style={{
               display: "flex",
               alignItems: "center",
-              width: "30%",
+              width: "20%",
               justifyContent: "space-evenly",
             }}
           >
             <AuthButton authState={authState} signIn={signIn} />
-            <div>
-              <Image
-                src="https://ipfs.io/ipfs/QmQUFjHvxCGBiCJPog61PLrcXXK66noEEdDF6dXiyV8hcy?filename=logo.png"
-                width={50}
-                height={50}
-              />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <p
-                style={{ color: "white", fontWeight: "600", fontSize: "20px" }}
-              >
-                {currLevel! + 1}
-              </p>
-            </div>
+            {isSignedInMetamask && (
+              <>
+                <div>
+                  <Image
+                    src="https://ipfs.io/ipfs/QmQUFjHvxCGBiCJPog61PLrcXXK66noEEdDF6dXiyV8hcy?filename=logo.png"
+                    width={40}
+                    height={40}
+                    style={{ borderRadius: "50%" }}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <p
+                    style={{
+                      color: "white",
+                      fontWeight: "600",
+                      fontSize: "12px",
+                      marginTop: "12px",
+                    }}
+                  >
+                    Level: {currLevel! + 1}
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </Header>
@@ -235,7 +248,7 @@ const CustomLayout = ({ children }: IProp) => {
       </Layout>
     </Layout>
   ) : (
-    <p style={{ color: "white" }}>LOADING.....</p>
+    <LottieAnimation height={400} width={400} lottieData={loadingAnimation} />
   );
 };
 
