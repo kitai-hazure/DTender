@@ -5,10 +5,10 @@ import TenderLottie from "@/assets/animation/main__tender.json";
 import { QRCode } from "react-qr-svg";
 import QRJson from "../qrcodes/qrcode.json";
 import { AuthContext } from "@/context/AuthContext";
-
 const { Title } = Typography;
 
 export default function Home() {
+  const { db } = useContext(AuthContext);
   const getQRCodeJson = (companyCIN: number) => {
     QRJson["body"]["scope"][0]["query"]["credentialSubject"][
       "corporateIdentificationNumber"
@@ -53,9 +53,22 @@ export default function Home() {
           flexDirection: "column",
         }}
         cancelButtonProps={{ disabled: true }}
-        onOk={() => {
-          if (isCompany) setShowQR(true);
-          else setIsVisible(false);
+        onOk={async () => {
+          if (isCompany) {
+            const records = await db!
+              .collection("VerifiedCompany")
+              .where(
+                "walletAddress",
+                "==",
+                localStorage.getItem("walletAddress") as string
+              )
+              .get();
+            if (records) {
+              setShowQR(false);
+            } else {
+              setShowQR(true);
+            }
+          } else setIsVisible(false);
         }}
       >
         {!showQR && (

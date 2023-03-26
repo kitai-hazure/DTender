@@ -11,7 +11,10 @@ import DTenderContract from "@/contracts/DTender.json";
 import { Contract, ethers } from "ethers";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
-const db = new Polybase();
+const db = new Polybase({
+  defaultNamespace:
+    "pk/0x08965f78c6a549905b66896f5a44b3a3ac27cdd9759057d534a0b9a5bcdf7cb9aa852288826e01a7034716a2f98252500a8e480a40a2be9b6a7cc1df2f4fd9f1/DTender",
+});
 
 db.signer((data) => {
   return {
@@ -31,6 +34,7 @@ export const AuthContext = React.createContext<IAuthContextProps>({
   setOptionToTrue: () => {},
   signer: undefined,
   contract: undefined,
+  db: undefined
 });
 
 const { chains, provider } = configureChains(
@@ -114,6 +118,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isSignedInMetamask,
         signer,
         contract,
+        db
       }}
     >
       {children}

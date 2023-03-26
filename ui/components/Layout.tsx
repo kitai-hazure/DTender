@@ -7,7 +7,7 @@ import {
   LogoutOutlined,
   MoneyCollectOutlined,
 } from "@ant-design/icons";
-import { MenuProps, notification } from "antd";
+import { Image, MenuProps, notification } from "antd";
 import { Layout, Menu, theme, Button } from "antd";
 import { Typography } from "antd";
 import { useRouter } from "next/router";
@@ -24,7 +24,7 @@ interface IProp {
 }
 
 const CustomLayout = ({ children }: IProp) => {
-  const { authState, signIn, signOut } = useContext(AuthContext);
+  const { authState, signIn, signOut, db } = useContext(AuthContext);
   const router = useRouter();
   const {
     token: { colorBgContainer },
@@ -115,6 +115,33 @@ const CustomLayout = ({ children }: IProp) => {
     };
   });
 
+  //DYNAMIC NFT FUNCTIONS
+  const createNFT = async () => {
+    console.log("Called");
+    await db!
+      .collection("DTenderDynamicNFTMetadata")
+      .create([localStorage.getItem("walletAddress") as string, "thirdNFT"]);
+    console.log("done");
+  };
+
+  const updateNFT = async () => {
+    console.log("Called");
+    await db!
+      .collection("DTenderDynamicNFTMetadata")
+      .record("2")
+      .call("upgradeLevel", []);
+    console.log("done");
+  };
+
+  const getNFTFromID = async (id: string) => {
+    const { data, block } = await db!
+      .collection("DTenderDynamicNFTMetadata")
+      .record(id)
+      .get();
+    console.log("DATA: ", data);
+  };
+
+  getNFTFromID("1");
   return (
     <Layout style={{ height: "100vh", overflowY: "clip" }}>
       <Header className="header" style={{ padding: "35px 20px" }}>
@@ -132,8 +159,35 @@ const CustomLayout = ({ children }: IProp) => {
               DTender
             </Title>
           </Link>
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              width: "30%",
+              justifyContent: "space-evenly",
+            }}
+          >
             <AuthButton authState={authState} signIn={signIn} />
+            <div>
+              <Image
+                src="https://ipfs.io/ipfs/QmQUFjHvxCGBiCJPog61PLrcXXK66noEEdDF6dXiyV8hcy?filename=logo.png"
+                width={50}
+                height={50}
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <p
+                style={{ color: "white", fontWeight: "600", fontSize: "20px" }}
+              >
+                0
+              </p>
+            </div>
           </div>
         </div>
       </Header>
