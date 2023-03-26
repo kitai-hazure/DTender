@@ -11,7 +11,7 @@ interface IAuthButtonProps {
 const AuthButton = ({ authState, signIn }: IAuthButtonProps) => {
   return authState ? (
     <div>
-      <Title level={3} style={{ color: "white" }}>
+      <Title level={5} style={{ color: "white" }}>
         Welcome{", "}
         {`${authState?.userId?.slice(0, 4)}....${authState?.userId?.slice(-4)}`}
       </Title>

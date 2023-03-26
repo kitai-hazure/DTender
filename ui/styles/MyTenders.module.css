@@ -1,0 +1,94 @@
+.tenderCard {
+  /* width: 60%; */
+  margin: auto;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 60%;
+}
+
+.tenderCard:hover {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s ease-in-out;
+  transform: scale(1.01);
+}
+
+.tenderTitle {
+  text-align: center;
+}
+
+.tenderList {
+  margin-top: 50px;
+}
+
+.name {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.parent {
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  font-size: 16px;
+  width: 80%;
+}
+
+.date {
+  font-size: 1rem;
+}
+
+.bid {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.flexCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.imageContainer {
+  margin: 10px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardParentDivs {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.bidButton {
+  margin-top: 40px;
+}
+
+.bidItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.bidDisplay {
+  font-size: 10px;
+}

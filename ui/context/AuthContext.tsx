@@ -7,7 +7,8 @@ import { configureChains, useAccount, useConnect } from "wagmi";
 import { polygonMumbai } from "wagmi/chains";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { publicProvider } from "wagmi/providers/public";
-import { ethers } from "ethers";
+import DTenderContract from "@/contracts/DTender.json";
+import { Contract, ethers } from "ethers";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 const db = new Polybase();
@@ -29,6 +30,7 @@ export const AuthContext = React.createContext<IAuthContextProps>({
   setCompany: () => {},
   setOptionToTrue: () => {},
   signer: undefined,
+  contract: undefined,
 });
 
 const { chains, provider } = configureChains(
@@ -43,6 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isSignedInMetamask, setIsSignedInMetamask] = React.useState(false);
   const [provider, setProvider] = React.useState<any>(null);
   const [signer, setSigner] = React.useState<ethers.providers.JsonRpcSigner>();
+  const [contract, setContract] = React.useState<Contract>();
 
   const signIn = async () => {
     const authState = await auth?.signIn();
@@ -57,11 +60,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const signer = provider.getSigner();
     console.log("signer: ", signer);
     setSigner(signer);
+    setContract(
+      new ethers.Contract(
+        "0x5c876A33570B1202Caf2892ce3D6F53c6c40bEC0",
+        DTenderContract.abi,
+        signer
+      )
+    );
   };
 
   const signOut = async () => {
     await auth?.signOut();
     setIsSignedInMetamask(false);
+    setSigner(undefined);
+    setIsCompany(false);
+    setSelectedOption(false);
+    localStorage.clear();
   };
 
   const setCompany = (isCompany: boolean) => {
@@ -99,6 +113,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setOptionToTrue,
         isSignedInMetamask,
         signer,
+        contract,
       }}
     >
       {children}

@@ -12,6 +12,7 @@ export interface IAuthContextProps {
   setCompany: (value: boolean) => void;
   setOptionToTrue: () => void;
   signer: ethers.providers.JsonRpcSigner | undefined;
+  contract: ethers.Contract | undefined;
 }
 export interface AuthProviderProps {
   children: React.ReactNode;

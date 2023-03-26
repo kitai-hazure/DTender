@@ -5,6 +5,7 @@ import {
   UserOutlined,
   DashboardOutlined,
   LogoutOutlined,
+  MoneyCollectOutlined,
 } from "@ant-design/icons";
 import { MenuProps, notification } from "antd";
 import { Layout, Menu, theme, Button } from "antd";
@@ -31,20 +32,20 @@ const CustomLayout = ({ children }: IProp) => {
   // const { data: signer } = useSigner();
   // const [signerAddress, setSignerAddress] = React.useState<string | null>(null);
   const [optionNames, setOptionNames] = React.useState([
-    "Dashboard",
-    "Propose an Investment",
-    "View Project Proposals",
+    "Propose a Tender",
+    "My Tenders",
+    "My Bids",
     "Logout",
   ]);
   const [optionRoutes, setOptionRoutes] = React.useState([
-    "/dashboard",
     "/propose-investment",
-    "/view-project-proposals",
+    "/my-tenders",
+    "/my-bids",
     "/logout",
   ]);
   const [iconsList, setIconsList] = React.useState([
-    DashboardOutlined,
     LaptopOutlined,
+    MoneyCollectOutlined,
     NotificationOutlined,
     LogoutOutlined,
   ]);

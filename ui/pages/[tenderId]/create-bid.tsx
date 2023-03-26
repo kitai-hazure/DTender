@@ -26,12 +26,11 @@ const { Title } = Typography;
 export default function CreateBid() {
   const { data: signer } = useSigner();
   const [contract, setContract] = React.useState<Contract>();
-  const [docs, setDocs] = React.useState<any>();
   const [form] = Form.useForm();
+  const [selectedTender, setSelectedTender] = React.useState<any>();
 
-  const onChange = (info: any) => {
-    console.log("DONE: ", info.file.response);
-    setDocs(info.file.response);
+  const onFinish = (values: any) => {
+    console.log("VALUES: ", values);
   };
 
   useEffect(() => {
@@ -54,56 +53,26 @@ export default function CreateBid() {
 
   return (
     <div>
-      <Title level={2} style={{ textAlign: "center" }}>
-        Create Bid
-      </Title>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-        }}
-      >
-        <Title
-          level={5}
-          style={{ textAlign: "center", fontWeight: "400", width: "80%" }}
-        >
-          Propose an tender to the DTender platform.
+      <Modal onOk={form.submit} open>
+        <Title level={2} style={{ textAlign: "center" }}>
+          Create Bid for {selectedTender?.name}
         </Title>
+
         <Form
           layout="vertical"
           style={{
-            width: "50%",
             display: "flex",
             flexDirection: "column",
+            alignItems: "center",
           }}
           form={form}
-          onFinish={(values) => {
-            console.log("VALUES: ", values);
-          }}
+          onFinish={onFinish}
         >
           <Form.Item
-            label="Tender Name"
-            name="tenderName"
-            rules={[{ required: true, message: "Please input tender name!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Tender Description"
-            name="tenderDescription"
+            label="Bid Amount"
+            name="bidAmount"
             rules={[
-              { required: true, message: "Please input tender description!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Minimum Bid Amount"
-            name="minimumBidAmount"
-            rules={[
-              { required: true, message: "Please input minimum bid amount!" },
+              { required: true, message: "Please input bid amount!" },
               { type: "number", message: "Please input a valid number!" },
               {
                 validator: (_, value) => {
@@ -114,69 +83,10 @@ export default function CreateBid() {
               },
             ]}
           >
-            <InputNumber />
+            <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item
-            label="Maximum Bid Amount"
-            name="maximumBidAmount"
-            rules={[
-              { required: true, message: "Please input maximum bid amount!" },
-              { type: "number", message: "Please input a valid number!" },
-              {
-                validator: (_, value) => {
-                  if (value < 0)
-                    return Promise.reject("Please input a positive number!");
-                  return Promise.resolve();
-                },
-              },
-            ]}
-          >
-            <InputNumber />
-          </Form.Item>
-          <Form.Item
-            label="Tender End Date"
-            name="tenderEndDate"
-            rules={[
-              { required: true, message: "Please input tender end date!" },
-            ]}
-          >
-            <DatePicker />
-          </Form.Item>
-          <Form.Item
-            label="Tender Document"
-            name="tenderDocument"
-            rules={[
-              { required: true, message: "Please input tender document!" },
-            ]}
-          >
-            <Upload
-              listType="picture-card"
-              multiple={false}
-              onChange={onChange}
-            >
-              <div>
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
-              </div>
-            </Upload>
-          </Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            style={{
-              width: "16vw",
-              padding: "19px 0",
-              borderRadius: 12,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              alignSelf: "center",
-            }}
-          >
-            Propose
-          </Button>
         </Form>
-      </div>
+      </Modal>
     </div>
   );
 }

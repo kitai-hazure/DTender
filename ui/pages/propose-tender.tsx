@@ -1,52 +1,53 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   DatePicker,
   Form,
   Input,
   InputNumber,
-  Modal,
-  Select,
   Typography,
   Upload,
 } from "antd";
-import LottieAnimation from "@/components/Lottie";
-import TenderLottie from "@/assets/animation/main__tender.json";
-import { QRCode } from "react-qr-svg";
-import QRJson from "../qrcodes/qrcode.json";
 import { AuthContext } from "@/context/AuthContext";
-import { useAccount, useConnect, useSigner } from "wagmi";
-import { Signer } from "@wagmi/core";
 import { Contract, ethers } from "ethers";
 import DTenderContract from "@/contracts/DTender.json";
 import { PlusOutlined } from "@ant-design/icons";
+import { getSolidityDate } from "@/utils/solidity";
 import Moralis from "moralis";
 
 const { Title } = Typography;
 
 export default function ProposeInvestment() {
-  const [contract, setContract] = React.useState<Contract>();
   const [form] = Form.useForm();
-  const { signer } = useContext(AuthContext);
+  const { contract } = useContext(AuthContext);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onFinish = async (values: any) => {
+    setLoading(true);
     console.log("VALUES: ", values);
     let moralisDocs = values.tenderDocument.fileList.map((doc: any) => {
+      console.log("DOC: ", doc);
       return {
         path: doc.name,
-        content: doc.file,
+        content: doc.thumbUrl,
       };
     });
-    console.log("MORALIS DOCS: ", moralisDocs);
-    // const response = await Moralis.EvmApi.ipfs.uploadFolder({
-    //   abi: moralisDocs,
-    // });
-    // console.log("RESPONSE: ", response.result);
-  };
-
-  const onChange = (event: any) => {
-    const file = event.target.files[0];
-    console.log("FILE: ", file);
+    const response = await Moralis.EvmApi.ipfs.uploadFolder({
+      abi: moralisDocs,
+    });
+    let ipfsHash = "";
+    for (const doc of response.result) ipfsHash += doc.path + "$,$";
+    ipfsHash = ipfsHash.slice(0, -3);
+    const res = await contract?.createTender(
+      values.tenderName,
+      values.tenderDescription,
+      getSolidityDate(values.tenderEndDate["$d"]),
+      ipfsHash,
+      values.minimumBidAmount,
+      values.maximumBidAmount
+    );
+    console.log(res);
+    setLoading(false);
   };
 
   // useEffect(() => {
@@ -70,7 +71,7 @@ export default function ProposeInvestment() {
   return (
     <div>
       <Title level={2} style={{ textAlign: "center" }}>
-        Propose Investment
+        Propose Tender
       </Title>
       <div
         style={{
@@ -162,17 +163,17 @@ export default function ProposeInvestment() {
               { required: true, message: "Please input tender document!" },
             ]}
           >
-            {/* <Upload listType="picture-card" multiple={false}>
+            <Upload listType="picture-card" multiple={false} accept="image/*">
               <div>
                 <PlusOutlined />
                 <div style={{ marginTop: 8 }}>Upload</div>
               </div>
-            </Upload> */}
-            <input type="file" multiple={false} onChange={onChange} />
+            </Upload>
           </Form.Item>
           <Button
             type="primary"
             htmlType="submit"
+            loading={loading}
             style={{
               width: "16vw",
               padding: "19px 0",
