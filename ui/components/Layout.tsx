@@ -108,6 +108,7 @@ const CustomLayout = ({ children }: IProp) => {
           signOut();
           localStorage.clear();
           notification.success({ message: "Logged out successfully" });
+          router.push("/");
         } else router.push(optionRoutes[index]);
       },
     };

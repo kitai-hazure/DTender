@@ -87,7 +87,7 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: black !important;
   background: linear-gradient(
       to bottom,
       transparent,
@@ -101,12 +101,10 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 .ant-layout-sider-trigger {
   position: absolute !important;
+}
+
+.next-error-h1 {
+  border-color: black !important;
 }
