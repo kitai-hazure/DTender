@@ -25,7 +25,7 @@ async function main() {
     schema: schemaBigInt,
     claimPathKey: schemaClaimPathKey,
     operator: Operators.EQ, // operator
-    value: [20020101, ...new Array(63).fill(0).map((i) => 0)], // for operators 1-3 only first value matters
+    value: [1234, ...new Array(63).fill(0).map((i) => 0)], // for operators 1-3 only first value matters
   };
 
   // add the address of the contract just deployed
@@ -35,6 +35,8 @@ async function main() {
     "DTender",
     DTenderRequestAddress
   );
+
+  console.log("address: ", DTenderRequestAddress);
 
   const validatorAddress = "0xF2D4Eeb4d455fb673104902282Ce68B9ce4Ac450"; // sig validator
   // const validatorAddress = "0x3DcAe4c8d94359D31e4C89D7F2b944859408C618"; // mtp validator
