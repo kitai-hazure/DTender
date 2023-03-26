@@ -1,7 +1,7 @@
 "use client";
 import "antd/dist/reset.css";
 import "@/styles/globals.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { AppProps } from "next/app";
 import { AuthProvider } from "@/context/AuthContext";
 import dynamic from "next/dynamic";
@@ -11,7 +11,9 @@ import { publicProvider } from "wagmi/providers/public";
 import { useContractEvent } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import DTenderJSON from "@/contracts/DTender.json";
+import Moralis from "moralis";
 import { Modal } from "antd";
+
 // DISABLED THE SSR FOR THE LAYOUT TO REMOVE THE HYDRATION ERROR
 const CustomLayout = dynamic(
   () => import("@/components/Layout").then((mod) => mod.default),
@@ -40,6 +42,18 @@ export default function App({ Component, pageProps }: AppProps) {
       setVerificationEvent(event);
     },
   });
+
+  useEffect(() => {
+    const startMoralis = async () => {
+      await Moralis.start({
+        apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY,
+      });
+    };
+    console.log("Moralis Called");
+    if (!Moralis.Core.isStarted) startMoralis();
+  }, []);
+
+  console.log("wagmiClient: ", wagmiClient);
 
   return (
     <>

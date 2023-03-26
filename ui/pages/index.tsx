@@ -15,7 +15,7 @@ export default function Home() {
     ]["$eq"] = companyCIN;
     return JSON.stringify(QRJson);
   };
-  const { selectedOption } = useContext(AuthContext);
+  const { selectedOption, isSignedInMetamask } = useContext(AuthContext);
   console.log("SELECTED OPTION: ", selectedOption);
 
   const [companyCIN, setCompanyCIN] = React.useState<number>(0);
@@ -46,7 +46,7 @@ export default function Home() {
       <LottieAnimation lottieData={TenderLottie} height={"75%"} width={"40%"} />
       <Modal
         title="Login Setup"
-        open={!selectedOption && isVisible}
+        open={!selectedOption && isVisible && isSignedInMetamask}
         style={{
           textAlign: "center",
           display: "flex",
@@ -94,7 +94,6 @@ export default function Home() {
           />
         )}
       </Modal>
-      {/* <QRCode level="Q" style={{ width: 256 }} value={getQRCodeJson(1234)} /> */}
     </div>
   );
 }

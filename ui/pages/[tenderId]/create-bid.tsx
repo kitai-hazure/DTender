@@ -13,64 +13,49 @@ import {
 import LottieAnimation from "@/components/Lottie";
 import TenderLottie from "@/assets/animation/main__tender.json";
 import { QRCode } from "react-qr-svg";
-import QRJson from "../qrcodes/qrcode.json";
+import QRJson from "../../qrcodes/qrcode.json";
 import { AuthContext } from "@/context/AuthContext";
-import { useAccount, useConnect, useSigner } from "wagmi";
+import { useSigner } from "wagmi";
 import { Signer } from "@wagmi/core";
 import { Contract, ethers } from "ethers";
 import DTenderContract from "@/contracts/DTender.json";
 import { PlusOutlined } from "@ant-design/icons";
-import Moralis from "moralis";
 
 const { Title } = Typography;
 
-export default function ProposeInvestment() {
+export default function CreateBid() {
+  const { data: signer } = useSigner();
   const [contract, setContract] = React.useState<Contract>();
+  const [docs, setDocs] = React.useState<any>();
   const [form] = Form.useForm();
-  const { signer } = useContext(AuthContext);
 
-  const onFinish = async (values: any) => {
-    console.log("VALUES: ", values);
-    let moralisDocs = values.tenderDocument.fileList.map((doc: any) => {
-      return {
-        path: doc.name,
-        content: doc.file,
+  const onChange = (info: any) => {
+    console.log("DONE: ", info.file.response);
+    setDocs(info.file.response);
+  };
+
+  useEffect(() => {
+    console.log("SIGNER: ", signer);
+    if (signer) {
+      const contract = new ethers.Contract(
+        "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+        DTenderContract.abi,
+        signer
+      );
+      setContract(contract);
+      const idk = async () => {
+        contract.getTenders().then((res: any) => {
+          console.log("RES: ", res);
+        });
       };
-    });
-    console.log("MORALIS DOCS: ", moralisDocs);
-    // const response = await Moralis.EvmApi.ipfs.uploadFolder({
-    //   abi: moralisDocs,
-    // });
-    // console.log("RESPONSE: ", response.result);
-  };
-
-  const onChange = (event: any) => {
-    const file = event.target.files[0];
-    console.log("FILE: ", file);
-  };
-
-  // useEffect(() => {
-  //   console.log("SIGNER: ", signer);
-  //   if (signer) {
-  //     const contract = new ethers.Contract(
-  //       "0x5c876A33570B1202Caf2892ce3D6F53c6c40bEC0",
-  //       DTenderContract.abi,
-  //       signer
-  //     );
-  //     setContract(contract);
-  //     const idk = async () => {
-  //       contract.getTenders().then((res: any) => {
-  //         console.log("RES: ", res);
-  //       });
-  //     };
-  //     idk();
-  //   }
-  // }, [signer]);
+      idk();
+    }
+  }, [signer]);
 
   return (
     <div>
       <Title level={2} style={{ textAlign: "center" }}>
-        Propose Investment
+        Create Bid
       </Title>
       <div
         style={{
@@ -94,7 +79,9 @@ export default function ProposeInvestment() {
             flexDirection: "column",
           }}
           form={form}
-          onFinish={onFinish}
+          onFinish={(values) => {
+            console.log("VALUES: ", values);
+          }}
         >
           <Form.Item
             label="Tender Name"
@@ -162,13 +149,16 @@ export default function ProposeInvestment() {
               { required: true, message: "Please input tender document!" },
             ]}
           >
-            {/* <Upload listType="picture-card" multiple={false}>
+            <Upload
+              listType="picture-card"
+              multiple={false}
+              onChange={onChange}
+            >
               <div>
                 <PlusOutlined />
                 <div style={{ marginTop: 8 }}>Upload</div>
               </div>
-            </Upload> */}
-            <input type="file" multiple={false} onChange={onChange} />
+            </Upload>
           </Form.Item>
           <Button
             type="primary"
