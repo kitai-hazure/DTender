@@ -25,6 +25,9 @@ interface IProp {
 
 const CustomLayout = ({ children }: IProp) => {
   const { authState, signIn, signOut, db } = useContext(AuthContext);
+  const [currLevel, setCurrLevel] = React.useState(undefined);
+  const [loading, setLoading] = React.useState(false);
+
   const router = useRouter();
   const {
     token: { colorBgContainer },
@@ -133,16 +136,26 @@ const CustomLayout = ({ children }: IProp) => {
     console.log("done");
   };
 
-  const getNFTFromID = async (id: string) => {
-    const { data, block } = await db!
-      .collection("DTenderDynamicNFTMetadata")
-      .record(id)
-      .get();
-    console.log("DATA: ", data);
-  };
+  useEffect(() => {
+    const getNFTFromID = async () => {
+      setLoading(true);
+      const { data, block } = await db!
+        .collection("DTenderDynamicNFTMetadata")
+        // .record(localStorage.getItem("walletAddress") as string)
+        .record("1")
+        .get();
 
-  getNFTFromID("1");
-  return (
+      // return data?.level;
+      console.log("Data: ", data);
+      setCurrLevel(data.level);
+      setLoading(false);
+    };
+
+    getNFTFromID();
+  }, []);
+
+  console.log(currLevel);
+  return !loading ? (
     <Layout style={{ height: "100vh", overflowY: "clip" }}>
       <Header className="header" style={{ padding: "35px 20px" }}>
         <div
@@ -185,7 +198,7 @@ const CustomLayout = ({ children }: IProp) => {
               <p
                 style={{ color: "white", fontWeight: "600", fontSize: "20px" }}
               >
-                0
+                {currLevel! + 1}
               </p>
             </div>
           </div>
@@ -221,6 +234,8 @@ const CustomLayout = ({ children }: IProp) => {
         </Layout>
       </Layout>
     </Layout>
+  ) : (
+    <p style={{ color: "white" }}>LOADING.....</p>
   );
 };
 
