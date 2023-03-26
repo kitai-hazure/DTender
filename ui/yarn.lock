@@ -773,6 +773,11 @@
   resolved "https://registry.yarnpkg.com/@polybase/polylang/-/polylang-0.4.9.tgz#35d54aeb053de2dc43d8e17b68fe61fe6c69edde"
   integrity sha512-qE84YdFGiqkY/uHyXmYIpUb2Dt5iSjVhGilbzv/to7Fc8hbGnzyfmoU8tgrbwVYdX9o8opnDmXJ1DSBBBg+bzQ==
 
+"@polybase/react@^0.3.38":
+  version "0.3.38"
+  resolved "https://registry.yarnpkg.com/@polybase/react/-/react-0.3.38.tgz#ece8758d176a6dde77c3f75657809f303158582f"
+  integrity sha512-HNhZCXZwsngheWinifm6YQbxea/TN/lwwW4Uk5x+Nc3WEMJhlHOX2uYYT4OcDd4PfHjAmXr3EEMMnO7OiqSSOg==
+
 "@polybase/util@^0.3.38":
   version "0.3.38"
   resolved "https://registry.yarnpkg.com/@polybase/util/-/util-0.3.38.tgz#dd409759393defd66220fae3fbb2d191c1a53bed"

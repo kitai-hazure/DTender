@@ -5,8 +5,16 @@ import TenderLottie from "@/assets/animation/main__tender.json";
 import { QRCode } from "react-qr-svg";
 import QRJson from "../qrcodes/qrcode.json";
 import { AuthContext } from "@/context/AuthContext";
+import { Polybase } from "@polybase/client";
+import { useCollection } from "@polybase/react";
+import { id } from "ethers/lib/utils.js";
 
 const { Title } = Typography;
+
+const db = new Polybase({
+  defaultNamespace:
+    "pk/0x08965f78c6a549905b66896f5a44b3a3ac27cdd9759057d534a0b9a5bcdf7cb9aa852288826e01a7034716a2f98252500a8e480a40a2be9b6a7cc1df2f4fd9f1/DTender",
+});
 
 export default function Home() {
   const getQRCodeJson = (companyCIN: number) => {
@@ -22,6 +30,36 @@ export default function Home() {
   const [isCompany, setIsCompany] = React.useState<null | boolean>(null);
   const [showQR, setShowQR] = React.useState<boolean>(false);
   const [isVisible, setIsVisible] = React.useState<boolean>(true);
+
+  //DYNAMIC NFT FUNCTIONS
+  const createNFT = async () => {
+    console.log("Called");
+    await db
+      .collection("DTenderDynamicNFTMetadata")
+      .create([
+        "2",
+        "secondNFT",
+        "https://ipfs.io/ipfs/QmTtE96Wt8uBpGT7zx5PWk5JeJWYA5qdNYrtVvz2WkvySr?filename=KALASHSHAH_LOL.jfif",
+      ]);
+    console.log("done");
+  };
+
+  const updateNFT = async () => {
+    console.log("Called");
+    await db
+      .collection("DTenderDynamicNFTMetadata")
+      .record("2")
+      .call("setlevel", [1]);
+    console.log("done");
+  };
+
+  const getNFTFromID = async (id : string) =>{
+    const { data, block } = await db
+    .collection("DTenderDynamicNFTMetadata").record(id).get();
+    console.log(data);
+  }
+
+  getNFTFromID("2")
 
   return (
     <div>
@@ -44,6 +82,7 @@ export default function Home() {
         </Title>
       </div>
       <LottieAnimation lottieData={TenderLottie} height={"75%"} width={"40%"} />
+      {/* <button onClick={(createNFT()}>Add NFT To Polybase</button> */}
       <Modal
         title="Login Setup"
         open={!selectedOption && isVisible}

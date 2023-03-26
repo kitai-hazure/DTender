@@ -12,6 +12,7 @@
     "@ant-design/icons": "^5.0.1",
     "@polybase/auth": "^0.3.38",
     "@polybase/client": "^0.3.38",
+    "@polybase/react": "^0.3.38",
     "@types/node": "18.15.7",
     "@types/react": "18.0.29",
     "@types/react-dom": "18.0.11",
