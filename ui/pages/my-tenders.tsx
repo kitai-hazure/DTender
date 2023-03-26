@@ -264,6 +264,7 @@ export default function MyTenders() {
     setIsMine(query?.mine === "true");
     const getTenders = async () => {
       if (contract) {
+        console.log("contract", contract);
         const tenders = await contract?.getTenders();
         let tenderList: Tender[] = [];
         for (const tender of tenders) {
@@ -315,17 +316,6 @@ export default function MyTenders() {
     };
     getBids();
   }, [contract, viewBidsModal]);
-
-  useEffect(() => {
-    if (!isSignedInMetamask || !selectedOption) {
-      notification.destroy();
-      notification.error({
-        message: "Not Signed In",
-        description: "Please sign in to continue",
-      });
-      router.push("/");
-    }
-  }, [isSignedInMetamask, selectedOption]);
 
   return (
     <div>
@@ -418,18 +408,6 @@ export default function MyTenders() {
           />
         )}
       </div>
-      <Button
-        onClick={async () => {
-          console.log("calling upgrade level");
-          await db!
-            .collection("DTenderDynamicNFTMetadata")
-            .record("2")
-            .call("upgradeLevel", []);
-          console.log("done");
-        }}
-      >
-        bhendi
-      </Button>
     </div>
   );
 }

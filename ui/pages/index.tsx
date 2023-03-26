@@ -14,6 +14,7 @@ import QRJson from "../qrcodes/qrcode.json";
 import { AuthContext } from "@/context/AuthContext";
 import { useContractEvent } from "wagmi";
 import DTenderJSON from "@/contracts/DTender.json";
+import { POLYGON_MUMBAI_ADDRESS } from "@/utils/constants";
 
 const { Title } = Typography;
 
@@ -68,7 +69,7 @@ export default function Home() {
   };
 
   useContractEvent({
-    address: `0x5c876A33570B1202Caf2892ce3D6F53c6c40bEC0`,
+    address: POLYGON_MUMBAI_ADDRESS,
     abi: DTenderJSON.abi,
     eventName: "ProofSubmitted",
     listener: (event) => {
@@ -116,7 +117,8 @@ export default function Home() {
                 localStorage.getItem("walletAddress") as string
               )
               .get();
-            if (records) {
+            console.log("RECORDS: ", records);
+            if (records.data.length > 0) {
               setShowQR(false);
             } else {
               setShowQR(true);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   DatePicker,
@@ -9,12 +9,10 @@ import {
   Typography,
   Upload,
 } from "antd";
+import Moralis from "moralis";
 import { AuthContext } from "@/context/AuthContext";
-import { Contract, ethers } from "ethers";
-import DTenderContract from "@/contracts/DTender.json";
 import { PlusOutlined } from "@ant-design/icons";
 import { getSolidityDate } from "@/utils/solidity";
-import Moralis from "moralis";
 import { useRouter } from "next/router";
 
 const { Title } = Typography;
@@ -51,20 +49,12 @@ export default function ProposeInvestment() {
       values.maximumBidAmount
     );
     console.log(res);
+    notification.success({
+      message: "Tender Created",
+      description: "Tender has been successfully created.",
+    });
     setLoading(false);
   };
-
-  useEffect(() => {
-    if (!isSignedInMetamask || !isCompany) {
-      notification.destroy();
-      notification.error({
-        message: "Not a Company",
-        description: "Only companies can propose tenders.",
-      });
-      router.push("/");
-      return;
-    }
-  }, []);
 
   return (
     <div>

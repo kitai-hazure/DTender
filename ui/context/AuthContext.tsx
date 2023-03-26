@@ -8,6 +8,7 @@ import { polygonMumbai } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import DTenderContract from "@/contracts/DTender.json";
 import { Contract, ethers } from "ethers";
+import { POLYGON_MUMBAI_ADDRESS } from "@/utils/constants";
 
 const auth = typeof window !== "undefined" ? new Auth() : null;
 const db = new Polybase({
@@ -65,11 +66,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.log("signer: ", signer);
       setSigner(signer);
       setContract(
-        new ethers.Contract(
-          "0x5c876A33570B1202Caf2892ce3D6F53c6c40bEC0",
-          DTenderContract.abi,
-          signer
-        )
+        new ethers.Contract(POLYGON_MUMBAI_ADDRESS, DTenderContract.abi, signer)
       );
     }
   };

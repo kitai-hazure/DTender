@@ -44,7 +44,7 @@ const CustomLayout = ({ children }: IProp) => {
     "Logout",
   ]);
   const [optionRoutes, setOptionRoutes] = React.useState([
-    "/propose-investment",
+    "/propose-tender",
     "/my-tenders",
     "/my-bids",
     "/logout",
@@ -145,7 +145,7 @@ const CustomLayout = ({ children }: IProp) => {
       const { data, block } = await db!
         .collection("DTenderDynamicNFTMetadata")
         // .record(localStorage.getItem("walletAddress") as string)
-        .record("1")
+        .record("2")
         .get();
 
       // return data?.level;
@@ -209,7 +209,7 @@ const CustomLayout = ({ children }: IProp) => {
                       marginTop: "12px",
                     }}
                   >
-                    Level: {currLevel! + 1}
+                    Level: {currLevel!}
                   </p>
                 </div>
               </>

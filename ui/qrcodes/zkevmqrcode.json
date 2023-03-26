@@ -6,10 +6,10 @@
   "body": {
     "reason": "tender validation",
     "transaction_data": {
-      "contract_address": "0x53e9D85ddB0364509Fc773d3fb1007cd351B8d5A",
+      "contract_address": "0xCc4A6407B36120f21ff21d0F7Eef23DBEaD2A977",
       "method_id": "b68967e2",
-      "chain_id": 80001,
-      "network": "polygon-mumbai"
+      "chain_id": 1442,
+      "network": "zkEVM"
     },
     "scope": [
       {
